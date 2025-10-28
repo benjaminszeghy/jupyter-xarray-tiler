@@ -7,7 +7,7 @@ except ImportError:
     import warnings
     warnings.warn("Importing 'jupyter_server_titiler' outside a proper installation.")
     __version__ = "dev"
-from .handlers import setup_handlers
+from .routes import setup_handlers
 
 
 def _jupyter_labextension_paths():
