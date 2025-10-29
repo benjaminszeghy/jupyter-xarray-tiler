@@ -1,12 +1,37 @@
-# Jupyter Server TiTiler (`jupyter-server-titiler`)
+# Jupyter MicroGIS
 
 [![Github Actions Status](https://github.com/geojupyter/jupyter-server-titiler/workflows/Build/badge.svg)](https://github.com/geojupyter/jupyter-server-titiler/actions/workflows/build.yml)
 
-A Jupyter Server extension which runs TiTiler.
+> [!IMPORTANT]
+> This repository is experimental and in the prototype stage.
+> Expect nothing to work.
+
+A Jupyter extension which provides a barebones read-only GIS experience from Xarray and 
+GeoPandas objects in a widget.
+
+Goals:
+
+* Serve users' simplest reasons for leaving JupyterLab for QGIS to make a cloud-only
+  workflow more comfortable
+* Simple API with usable defaults (`explore(ds, ds, gdf, { data: gdf, symbology: "choropleth"}`)
+* Re-arrange, show/hide, change transparency of layers
+
+Stretch goals:
+
+* Data discovery interface to find and visualize public datasets alongside your
+  Python data objects
+* Simple symbology editing
+
+Non-goals:
+
+* Exporting maps
+* Data analysis (use a Notebook!)
+* Advanced Symbology
 
 This extension is composed of a Python package named `jupyter_server_titiler`
 for the server extension and an NPM package named `jupyter-server-titiler`
 for the frontend extension.
+
 
 ## Requirements
 
