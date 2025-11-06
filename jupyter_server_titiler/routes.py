@@ -1,24 +1,28 @@
 import json
 
-from jupyter_server.base.handlers import APIHandler
+from jupyter_server.base.handlers import JupyterHandler 
 from jupyter_server.utils import url_path_join
 import tornado
 
-class HelloRouteHandler(APIHandler):
-    # The following decorator should be present on all verb methods (head, get, post,
-    # patch, put, delete, options) to ensure only authorized user can request the
-    # Jupyter server
+from constants import ENDPOINT_BASE
+
+
+class TiTilerRouteHandler(JupyterHandler):
+    """How does this handler work?"""
+
     @tornado.web.authenticated
-    def get(self):
-        self.finish(json.dumps({
-            "data": "This is /titiler/get-example endpoint!"
-        }))
+    async def get(self, path):
+        params = {key: val[0].decode() for key, val in self.request.arguments.items()}
+        server_url = params.pop("server_url")
+        async with httpx.AsyncClient() as client:
+            r = await client.get(f"{server_url}/{path}", params=params)
+            self.write(r.content)
 
 
 def setup_handlers(web_app):
     host_pattern = ".*$"
 
     base_url = web_app.settings["base_url"]
-    route_pattern = url_path_join(base_url, "titiler", "get-example")
-    handlers = [(route_pattern, RouteHandler)]
+    titiler_route_pattern = url_path_join(base_url, ENDPOINT_BASE)
+    handlers = [(titiler_route_pattern, TiTilerRouteHandler)]
     web_app.add_handlers(host_pattern, handlers)
