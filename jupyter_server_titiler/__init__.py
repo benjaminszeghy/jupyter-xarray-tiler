@@ -1,3 +1,8 @@
+from jupyter_server_titiler.constants import (
+    LAB_EXTENSION_NAME,
+    SERVER_EXTENSION_NAME,
+)
+
 try:
     from jupyter_server_titiler._version import __version__
 except ImportError:
@@ -5,7 +10,7 @@ except ImportError:
     # in editable mode with pip. It is highly recommended to install
     # the package from a stable release or in editable mode: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
     import warnings
-    warnings.warn("Importing 'jupyter_server_titiler' outside a proper installation.")
+    warnings.warn(f"Importing '{SERVER_EXTENSION_NAME}' outside a proper installation.")
     __version__ = "dev"
 
 from jupyter_server_titiler.routes import setup_routes
@@ -14,13 +19,13 @@ from jupyter_server_titiler.routes import setup_routes
 def _jupyter_labextension_paths():
     return [{
         "src": "labextension",
-        "dest": "jupyter-server-titiler"
+        "dest": LAB_EXTENSION_NAME,
     }]
 
 
 def _jupyter_server_extension_points():
     return [{
-        "module": "jupyter_server_titiler"
+        "module": SERVER_EXTENSION_NAME,
     }]
 
 
@@ -33,5 +38,4 @@ def _load_jupyter_server_extension(server_app):
         JupyterLab application instance
     """
     setup_routes(server_app.web_app)
-    name = "jupyter_server_titiler"
-    server_app.log.info(f"Registered {name} server extension")
+    server_app.log.info(f"Registered '{SERVER_EXTENSION_NAME}' server extension")
