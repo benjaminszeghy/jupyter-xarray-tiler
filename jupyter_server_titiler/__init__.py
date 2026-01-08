@@ -1,5 +1,5 @@
 try:
-    from ._version import __version__
+    from jupyter_server_titiler._version import __version__
 except ImportError:
     # Fallback when using the package in dev mode without installing
     # in editable mode with pip. It is highly recommended to install
@@ -7,7 +7,8 @@ except ImportError:
     import warnings
     warnings.warn("Importing 'jupyter_server_titiler' outside a proper installation.")
     __version__ = "dev"
-from .routes import setup_handlers
+
+from jupyter_server_titiler.routes import setup_handlers
 
 
 def _jupyter_labextension_paths():

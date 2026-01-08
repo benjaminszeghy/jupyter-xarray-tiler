@@ -4,7 +4,7 @@ from jupyter_server.base.handlers import JupyterHandler
 from jupyter_server.utils import url_path_join
 import tornado
 
-from constants import ENDPOINT_BASE
+from jupyter_server_titiler.constants import ENDPOINT_BASE
 
 
 class TiTilerRouteHandler(JupyterHandler):

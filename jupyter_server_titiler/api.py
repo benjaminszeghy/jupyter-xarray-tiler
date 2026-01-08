@@ -16,7 +16,7 @@ from titiler.core.algorithm import algorithms as default_algorithms
 from titiler.core.algorithm import Algorithms, BaseAlgorithm
 from titiler.core.dependencies import DefaultDependency
 
-from constants import ENDPOINT_BASE
+from jupyter_server_titiler.constants import ENDPOINT_BASE
 
 
 # def _setup_app() -> FastAPI:
