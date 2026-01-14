@@ -1,6 +1,6 @@
 # Jupyter MicroGIS
 
-[![Github Actions Status](https://github.com/geojupyter/jupyter-server-titiler/workflows/Build/badge.svg)](https://github.com/geojupyter/jupyter-server-titiler/actions/workflows/build.yml)
+[![Github Actions Status - Build](https://github.com/geojupyter/jupyter-microgis/workflows/Build/badge.svg)](https://github.com/geojupyter/jupyter-microgis/actions/workflows/build.yml)
 
 > [!IMPORTANT]
 > This repository is experimental and in the prototype stage.
