@@ -30,6 +30,7 @@ dependencies = [
     "anycorn",
     "rioxarray",
     "geopandas",
+    "httpx>=0.28.1",
 ]
 
 [dependency-groups]

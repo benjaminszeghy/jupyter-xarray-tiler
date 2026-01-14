@@ -1,3 +1,4 @@
+import httpx
 import json
 
 from jupyter_server.base.handlers import APIHandler
