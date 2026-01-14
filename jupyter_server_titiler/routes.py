@@ -18,7 +18,8 @@ class TiTilerRouteHandler(APIHandler):
         if not path:
             self.finish(
                 f"This is the root endpoint of the '{SERVER_EXTENSION_NAME}'"
-                " server extension"
+                " server extension",
+                set_content_type="text/plain; charset=UTF-8",
             )
             return
 
