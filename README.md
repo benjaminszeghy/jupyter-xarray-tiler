@@ -5,6 +5,8 @@
 > [!IMPORTANT]
 > This repository is experimental and in the prototype stage.
 > Expect nothing to work.
+> Expect it to be broken up in to multiple repositories and for the name to change in
+> the future.
 
 A Jupyter extension which provides a barebones read-only GIS experience from Xarray and
 GeoPandas objects in a widget.
