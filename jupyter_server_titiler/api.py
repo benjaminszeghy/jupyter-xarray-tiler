@@ -84,7 +84,11 @@ class TiTilerServer:
                 self._tile_server_shutdown.set()
 
     async def _start_tile_server(self):
-        self._app = FastAPI()
+        self._app = FastAPI(
+            openapi_url="/",
+            docs_url=None,
+            redoc_url=None,
+        )
 
         config = Config()
         config.bind = "127.0.0.1:0"
