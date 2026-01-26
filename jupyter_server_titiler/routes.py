@@ -9,7 +9,14 @@ from jupyter_server_titiler.api import TiTilerServer
 
 
 class TiTilerRouteHandler(APIHandler):
-    """How does this handler work?"""
+    """Proxy incoming requests to the /titiler/ endpoint to the TiTiler server.
+
+    Starts a server instance if one isn't already running.
+
+    Gets the URL of the tile server from the running instance. Forwards the `path` and
+    `params` component of the incoming request to the TiTiler server, then returns the
+    response from TiTiler.
+    """
 
     @tornado.web.authenticated
     async def get(self, path: str):
@@ -19,7 +26,7 @@ class TiTilerRouteHandler(APIHandler):
         await server.start_tile_server()
         get_url = f"{server._tile_server_url}/{path}"
 
-        # Proxy the request to FastAPI service
+        # Proxy the incoming request to TiTiler's FastAPI service
         async with httpx.AsyncClient() as client:
             r = await client.get(get_url, params=params)
 
