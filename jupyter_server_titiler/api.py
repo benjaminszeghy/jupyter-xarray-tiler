@@ -1,7 +1,7 @@
 import uuid
 from asyncio import Event, Lock, Task, create_task
 from functools import partial
-from typing import Optional
+from typing import Any, Optional
 from urllib.parse import urlencode
 
 from anycorn import Config, serve
@@ -40,6 +40,10 @@ class TiTilerServer:
         self._tile_server_started = Event()
         self._tile_server_shutdown = Event()
         self._tile_server_lock = Lock()
+
+    @property
+    def routes(self) -> list[dict[str, Any]]:
+        return [{"path": route.path, "name": route.name} for route in self._app.routes]
 
     async def start_tile_server(self):
         async with self._tile_server_lock:
