@@ -10,6 +10,11 @@ async def titiler_server():
     server = TiTilerServer()
     await server.start_tile_server()
     yield server
+
+    await server.stop_tile_server()
+    if server._tile_server_task:
+        await server._tile_server_task
+
     TiTilerServer.reset()
 
 
