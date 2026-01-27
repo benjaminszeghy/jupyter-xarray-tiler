@@ -1,7 +1,7 @@
 import uuid
 from asyncio import Event, Lock, Task, create_task
 from functools import partial
-from typing import Any, Optional
+from typing import Any, Optional, Self
 from urllib.parse import urlencode
 
 from anycorn import Config, serve
@@ -27,9 +27,10 @@ class TiTilerServer:
     https://github.com/geojupyter/jupytergis-tiler/blob/main/src/jupytergis/tiler/gis_document.py
     """
 
-    _instance: Optional["TiTilerServer"] = None
+    _instance: Optional[Self] = None
+    _app: FastAPI
 
-    def __new__(cls) -> "TiTilerServer":
+    def __new__(cls) -> Self:
         if cls._instance is None:
             print("New TiTilerServer instance created")
             cls._instance = super().__new__(cls)
@@ -43,7 +44,10 @@ class TiTilerServer:
         self._tile_server_lock = Lock()
 
     @classmethod
-    async def reset(cls):
+    async def reset(cls) -> None:
+        if not cls._instance:
+            raise RuntimeError(f"{cls.__name__} not initialized")
+
         await cls._instance.stop_tile_server()
         if cls._instance._tile_server_task:
             await cls._instance._tile_server_task
@@ -59,7 +63,7 @@ class TiTilerServer:
             if isinstance(route, APIRoute)
         ]
 
-    async def start_tile_server(self):
+    async def start_tile_server(self) -> None:
         async with self._tile_server_lock:
             if not self._tile_server_started.is_set():
                 self._tile_server_task = create_task(self._start_tile_server())
@@ -75,7 +79,7 @@ class TiTilerServer:
         opacity: float = 1,
         algorithm: BaseAlgorithm | None = None,
         **params,
-    ):
+    ) -> str:
         await self.start_tile_server()
 
         _params = {
@@ -96,12 +100,12 @@ class TiTilerServer:
         )
         return url
 
-    async def stop_tile_server(self):
+    async def stop_tile_server(self) -> None:
         async with self._tile_server_lock:
             if self._tile_server_started.is_set():
                 self._tile_server_shutdown.set()
 
-    async def _start_tile_server(self):
+    async def _start_tile_server(self) -> None:
         self._app = FastAPI(
             openapi_url="/",
             docs_url=None,
@@ -115,9 +119,9 @@ class TiTilerServer:
             binds = await tg.start(
                 partial(
                     serve,
-                    self._app,
+                    self._app,  # type: ignore[arg-type]
                     config,
-                    shutdown_trigger=self._tile_server_shutdown.wait,
+                    shutdown_trigger=self._tile_server_shutdown.wait,  # type: ignore[arg-type]
                     mode="asgi",
                 )
             )
@@ -140,7 +144,7 @@ class TiTilerServer:
         source_id: str,
         data_array: DataArray,
         algorithm: BaseAlgorithm | None = None,
-    ):
+    ) -> None:
         algorithms = default_algorithms
         if algorithm is not None:
             algorithms = default_algorithms.register({"algorithm": algorithm})
@@ -156,7 +160,7 @@ class TiTilerServer:
 
 
 # async def explore(*args: list[DataArray | Dataset]):
-async def explore(da: DataArray):
+async def explore(da: DataArray) -> str:
     """Explore xarray DataArrays and Datasets in a map widget.
 
     This function must be called with await in a Jupyter notebook:
