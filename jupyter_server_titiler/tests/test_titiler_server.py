@@ -11,11 +11,7 @@ async def titiler_server():
     await server.start_tile_server()
     yield server
 
-    await server.stop_tile_server()
-    if server._tile_server_task:
-        await server._tile_server_task
-
-    TiTilerServer.reset()
+    await TiTilerServer.reset()
 
 
 @pytest.fixture
@@ -38,10 +34,11 @@ def test_server_is_singleton():
     TiTilerServer.reset()
 
 
-def test_server_singleton_cleanup():
+@pytest.mark.asyncio
+async def test_server_singleton_cleanup():
     a = TiTilerServer()
     id_a = id(a)
-    TiTilerServer.reset()
+    await TiTilerServer.reset()
 
     b = TiTilerServer()
     id_b = id(b)

@@ -42,7 +42,11 @@ class TiTilerServer:
         self._tile_server_lock = Lock()
 
     @classmethod
-    def reset(cls):
+    async def reset(cls):
+        await cls._instance.stop_tile_server()
+        if cls._instance._tile_server_task:
+            await cls._instance._tile_server_task
+
         del cls._instance
         cls._instance = None
 
