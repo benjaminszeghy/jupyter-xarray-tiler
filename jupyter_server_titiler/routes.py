@@ -24,7 +24,7 @@ class TiTilerRouteHandler(APIHandler):
 
         server = TiTilerServer()
         await server.start_tile_server()
-        get_url = f"{server._tile_server_url}/{path}"
+        get_url = f"{server._tile_server_url}/{path}"  # noqa: SLF001
 
         # Proxy the incoming request to TiTiler's FastAPI service
         async with httpx.AsyncClient() as client:

@@ -1,7 +1,7 @@
 import uuid
 from asyncio import Event, Lock, Task, create_task
 from functools import partial
-from typing import Any, Optional, Self
+from typing import Any, Self
 from urllib.parse import urlencode
 
 from anycorn import Config, serve
@@ -26,7 +26,7 @@ class TiTilerServer:
     https://github.com/geojupyter/jupytergis-tiler/blob/main/src/jupytergis/tiler/gis_document.py
     """
 
-    _instance: Optional[Self] = None
+    _instance: Self | None = None
     _app: FastAPI
 
     def __new__(cls) -> Self:
@@ -47,8 +47,8 @@ class TiTilerServer:
             raise RuntimeError(f"{cls.__name__} not initialized")
 
         await cls._instance.stop_tile_server()
-        if cls._instance._tile_server_task:
-            await cls._instance._tile_server_task
+        if cls._instance._tile_server_task:  # noqa: SLF001
+            await cls._instance._tile_server_task  # noqa: SLF001
 
         del cls._instance
         cls._instance = None
@@ -70,11 +70,9 @@ class TiTilerServer:
     async def add_data_array(
         self,
         data_array: DataArray,
-        name: str,
         colormap_name: str = "viridis",
         rescale: tuple[float, float] | None = None,
         scale: int = 1,
-        opacity: float = 1,
         algorithm: BaseAlgorithm | None = None,
         **params,
     ) -> str:
@@ -94,12 +92,10 @@ class TiTilerServer:
 
         self._include_tile_server_router(source_id, data_array, algorithm)
 
-        url = (
+        return (
             f"/{ENDPOINT_BASE}/{source_id}/tiles/WebMercatorQuad/"
-            + "{z}/{x}/{y}.png?"
-            + urlencode(_params)
+            "{z}/{x}/{y}.png?" + urlencode(_params)
         )
-        return url
 
     async def stop_tile_server(self) -> None:
         async with self._tile_server_lock:
@@ -124,7 +120,7 @@ class TiTilerServer:
                     config,
                     shutdown_trigger=self._tile_server_shutdown.wait,  # type: ignore[arg-type]
                     mode="asgi",
-                )
+                ),
             )
 
             self._tile_server_url = binds[0]

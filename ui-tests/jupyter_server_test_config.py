@@ -13,4 +13,4 @@ configure_jupyter_server(c)  # noqa: F821
 # TODO: Add explanation and link to docs
 
 # Uncomment to set server log level to debug level
-# c.ServerApp.log_level = "DEBUG"
+# c.ServerApp.log_level = "DEBUG"  # noqa: ERA001

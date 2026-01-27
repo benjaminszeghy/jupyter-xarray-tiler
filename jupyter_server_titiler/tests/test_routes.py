@@ -7,8 +7,8 @@ async def test_extension_root_route(jp_fetch):
     # Not sure why a 2nd argument is needed! ¯\_(ツ)_/¯
     response = await jp_fetch(ENDPOINT_BASE, "/")
 
-    assert response.code == 200
+    assert response.code == 200  # noqa: PLR2004
 
     body_json = json.loads(response.body)
     expected_keys = ["openapi", "info", "paths"]
-    assert all([key in body_json.keys() for key in expected_keys])
+    assert all([key in body_json for key in expected_keys])  # noqa: C419

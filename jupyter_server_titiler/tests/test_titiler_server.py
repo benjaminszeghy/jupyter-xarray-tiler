@@ -17,7 +17,8 @@ async def titiler_server():
 
 @pytest.fixture
 def random_data_array():
-    data = np.random.rand(100, 100)
+    data = np.random.default_rng().random((100, 100))
+
     return xr.DataArray(
         data,
         dims=["y", "x"],
@@ -54,7 +55,9 @@ async def test_add_data_array_creates_api_routes(titiler_server, random_data_arr
     assert len(titiler_server.routes) == 0
 
     await titiler_server.add_data_array(
-        data_array=random_data_array, name="test_layer", colormap_name="viridis"
+        data_array=random_data_array,
+        name="test_layer",
+        colormap_name="viridis",
     )
 
     pytest.xfail("`add_data_array(...)` doesn't add routes correctly yet")
@@ -65,7 +68,9 @@ async def test_add_data_array_creates_api_routes(titiler_server, random_data_arr
 async def test_add_data_array_returns_valid_tile_url(titiler_server, random_data_array):
     """Test that adding a DataArray returns a properly formatted tile URL."""
     tile_url = await titiler_server.add_data_array(
-        data_array=random_data_array, name="test_layer", colormap_name="viridis"
+        data_array=random_data_array,
+        name="test_layer",
+        colormap_name="viridis",
     )
 
     assert tile_url is not None
