@@ -12,7 +12,7 @@ async def titiler_server():
     await server.start_tile_server()
     yield server
 
-    await TiTilerServer.reset()
+    await TiTilerServer._reset()
 
 
 @pytest.fixture
@@ -34,14 +34,14 @@ def random_data_array():
 async def test_server_is_singleton():
     """Test that TiTilerServer is a singleton."""
     assert TiTilerServer() is TiTilerServer()
-    await TiTilerServer.reset()
+    await TiTilerServer._reset()
 
 
 @pytest.mark.asyncio
 async def test_server_singleton_cleanup():
     a = TiTilerServer()
     id_a = id(a)
-    await TiTilerServer.reset()
+    await TiTilerServer._reset()
 
     b = TiTilerServer()
     id_b = id(b)

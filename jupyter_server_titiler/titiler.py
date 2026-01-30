@@ -44,7 +44,8 @@ class TiTilerServer:
         self._tile_server_lock = Lock()
 
     @classmethod
-    async def reset(cls) -> None:
+    async def _reset(cls) -> None:
+        """Destroy the singleton instance -- for testing only."""
         if not cls._instance:
             raise RuntimeError(f"{cls.__name__} not initialized")
 
