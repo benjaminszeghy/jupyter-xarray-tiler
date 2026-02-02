@@ -1,79 +1,165 @@
-# Jupyter MicroGIS
+# Jupyter Xarray Tiler
 
-[![Github Actions Status - Build](https://github.com/geojupyter/jupyter-microgis/workflows/Build/badge.svg)](https://github.com/geojupyter/jupyter-microgis/actions/workflows/build.yml)
+[![Github Actions Status - Build](https://github.com/geojupyter/jupyter-xarray-tiler/workflows/Build/badge.svg)](https://github.com/geojupyter/jupyter-xarray-tiler/actions/workflows/build.yml)
 
 > [!IMPORTANT]
 > This repository is experimental and in the prototype stage.
 > Expect nothing to work.
-> Expect it to be broken up in to multiple repositories and for the name to change in
-> the future.
+> Expect the name to change in the future.
 
-A Jupyter extension which provides a barebones read-only GIS experience from Xarray and
-GeoPandas objects in a widget.
+A Jupyter server extension which provides an API to launch a server to dynamically tile
+[Xarray DataArray](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html)s
+for interactive visualization.
 
-Inspired by [jupytergis-tiler](https://github.com/geojupyter/jupytergis-tiler) by
-[David Brochart](https://github.com/davidbrochart).
+### :rocket: Powered by...
 
-Goals:
+[TiTiler (Development Seed)](https://developmentseed.org/titiler/)
 
-- Serve users' simplest reasons for leaving JupyterLab for QGIS to make a cloud-only
-  workflow more comfortable
-- Simple API with usable defaults (`explore(ds, ds, gdf, { data: gdf, symbology: "choropleth"}`)
-- Re-arrange, show/hide, change transparency of layers
+Other backends (e.g.
+[xpublish-tiles (earthmover)](https://github.com/earth-mover/xpublish-tiles)) may be
+supported in the future!
 
-Stretch goals:
+### :sparkles: Inspired by...
 
-- Data discovery interface to find and visualize public datasets alongside your
-  Python data objects
-- Simple symbology editing
+[jupytergis-tiler](https://github.com/geojupyter/jupytergis-tiler) by
+[David Brochart](https://github.com/davidbrochart)
 
-Non-goals:
+## Who is this for?
 
-- Exporting maps
-- Data analysis (use a Notebook!)
-- Advanced Symbology
+Intended to be consumed by interactive map libraries for Jupyter, **not end-users**,
+e.g.:
 
-This extension is composed of a Python package named `jupyter_server_titiler`
-for the server extension and an NPM package named `jupyter-server-titiler`
-for the frontend extension.
+* [Leafmap](https://leafmap.org/)
+* [ipyleaflet](https://ipyleaflet.readthedocs.io)
+* [ipyopenlayers](https://ipyopenlayers.readthedocs.io/)
+* More?
 
-## Requirements
+## What problem does this solve?
 
-- JupyterLab >= 4.0.0
+For authors of interactive map libraries for Jupyter, providing a dynamic HTTP tile
+server presents a unique problem: **they don't know where Jupyter is running**.
+It could be, for example, running on:
+
+* users' local machines
+* a shared JupyterLab instance on an intranet
+* an authenticated JupyterHub in a public cloud
+
+The first case is the simplest; when the tile server is running on `localhost`, the map
+viewer running in JavaScript in the user's browser can connect to it.
+
+In the other cases, the map viewer needs a public URL to connect to.
+The URL of the current JupyterHub instance may not be known.
+Additionally, a map server running in a Jupyter kernel isn't exposed to the public
+internet in many cases (for example, when it's running in a Kubernetes pod as part of a
+JupyterHub).
+This extension provides [dynamic proxying](https://jupyter-server-proxy.readthedocs.io/)
+to map servers running in the kernel.
+
+## Usage
+
+As a Jupyter interactive map library author, you may implement a method like:
+
+```python
+from jupyter_xarray_tiler import TiTilerServer
+
+
+class MyMapLibrary:
+  # ...
+
+  def add_xarray_layer(self, da: xr.DataArray):
+    # Get a server object (will always reference the same server);
+    # server will be started if necessary:
+    tileserver = TiTilerServer()
+
+    # Add the layer to the tile server.
+    # A URL that passes through the Jupyter server proxy will be returned:
+    url = tileserver.add_data_array(da)
+
+    # Add the layer to your map!
+    self._add_tile_layer(url)
+```
 
 ## Install
 
-> [!WARNING]
-> This method of installation doesn't work yet, see the dev instuctions for now.
+### Requirements
 
-To install the extension, execute:
+- JupyterLab >= 4.0.0
+
+
+### From PyPI
+
+> [!WARNING]
+> This method of installation doesn't work yet.
+> Install from source or see the [contributing instuctions](CONTRIBUTING.md) for now.
+
+Recommended:
 
 ```bash
-pip install jupyter_server_titiler
+uv add jupyter-xarray-tiler
 ```
+
+Or:
+
+```bash
+pip install jupyter-xarray-tiler
+```
+
+### From Conda Forge
+
+> [!WARNING]
+> This method of installation doesn't work yet.
+> Install from source or see the [contributing instuctions](CONTRIBUTING.md) for now.
+
+Recommended:
+
+```bash
+pixi add jupyter-xarray-tiler
+```
+
+Or:
+
+```bash
+conda install jupyter-xarray-tiler
+```
+
+### From source
+
+Recommended:
+
+```bash
+uv add git+https://github.com/geojupyter/jupyter-xarray-tiler.git#egg=jupyter-xarray-tiler
+```
+
+Or:
+
+```bash
+pip install git+https://github.com/geojupyter/jupyter-xarray-tiler.git#egg=jupyter-xarray-tiler
+```
+
+If you prefer to install from a local clone, view the [contributing instuctions](CONTRIBUTING.md).
 
 ## Uninstall
 
-To remove the extension, execute:
-
 ```bash
-pip uninstall jupyter_server_titiler
+uv remove jupyter-xarray-tiler
 ```
 
-## Troubleshoot
-
-If you are seeing the frontend extension, but it is not working, check
-that the server extension is enabled:
+Or:
 
 ```bash
-jupyter server extension list
+pip uninstall jupyter-xarray-tiler
 ```
 
-If the server extension is installed and enabled, but you are not seeing
-the frontend extension, check the frontend extension is installed:
+Or:
 
 ```bash
-jupyter labextension list
+pixi remove jupyter-xarray-tiler
+```
+
+Or:
+
+```bash
+conda uninstall jupyter-xarray-tiler
 ```
 
 ## Contributing

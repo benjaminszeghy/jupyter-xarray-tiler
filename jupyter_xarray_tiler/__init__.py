@@ -1,15 +1,12 @@
 from jupyter_server.serverapp import ServerApp
 
-from jupyter_server_titiler.constants import (
-    LAB_EXTENSION_NAME,
-    SERVER_EXTENSION_NAME,
-)
-from jupyter_server_titiler.titiler import TiTilerServer
+from jupyter_xarray_tiler.constants import SERVER_EXTENSION_NAME
+from jupyter_xarray_tiler.titiler import TiTilerServer
 
 __all__ = ["TiTilerServer"]
 
 try:
-    from jupyter_server_titiler._version import __version__
+    from jupyter_xarray_tiler._version import __version__
 except ImportError:
     # Fallback when using the package in dev mode without installing
     # in editable mode with pip:
@@ -23,15 +20,6 @@ except ImportError:
         stacklevel=2,
     )
     __version__ = "dev"
-
-
-def _jupyter_labextension_paths() -> list[dict[str, str]]:
-    return [
-        {
-            "src": "labextension",
-            "dest": LAB_EXTENSION_NAME,
-        },
-    ]
 
 
 def _jupyter_server_extension_points() -> list[dict[str, str]]:

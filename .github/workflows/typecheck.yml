@@ -28,4 +28,4 @@ jobs:
 
     - name: Run mypy
       run: |
-        mypy jupyter_server_titiler
+        mypy

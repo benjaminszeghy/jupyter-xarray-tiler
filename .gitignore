@@ -9,9 +9,9 @@ node_modules/
 *.egg-info/
 .ipynb_checkpoints
 *.tsbuildinfo
-jupyter_server_titiler/labextension
+jupyter_xarray_tiler/labextension
 # Version file is handled by hatchling
-jupyter_server_titiler/_version.py
+jupyter_xarray_tiler/_version.py
 
 # Integration tests
 ui-tests/test-results/

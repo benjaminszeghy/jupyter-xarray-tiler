@@ -3,7 +3,7 @@ import pytest
 import pytest_asyncio
 import xarray as xr
 
-from jupyter_server_titiler.titiler import TiTilerServer
+from jupyter_xarray_tiler.titiler import TiTilerServer
 
 
 @pytest_asyncio.fixture

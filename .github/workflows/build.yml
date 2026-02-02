@@ -40,13 +40,9 @@ jobs:
         set -eux
         python -m pip install .[test]
 
-        pytest -vv -r ap --cov jupyter_server_titiler
+        pytest -vv -r ap --cov jupyter_xarray_tiler
         jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "jupyter_server_titiler.*OK"
-
-        jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "jupyter-server-titiler.*OK"
-        python -m jupyterlab.browser_check
+        jupyter server extension list 2>&1 | grep -ie "jupyter_xarray_tiler.*OK"
 
     - name: Package the extension
       run: |
@@ -54,13 +50,13 @@ jobs:
 
         pip install build
         python -m build
-        pip uninstall -y "jupyter_server_titiler" jupyterlab
+        pip uninstall -y "jupyter-xarray-tiler" jupyterlab
 
     - name: Upload extension packages
       uses: actions/upload-artifact@v4
       with:
         name: extension-artifacts
-        path: dist/jupyter_server_titiler*
+        path: dist/jupyter_xarray_tiler*
         if-no-files-found: error
 
   test_isolated:
@@ -83,15 +79,11 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab>=4.0.0,<5" jupyter_server_titiler*.whl
+        pip install "jupyterlab>=4.0.0,<5" jupyter_xarray_tiler*.whl
 
 
         jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "jupyter_server_titiler.*OK"
-
-        jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "jupyter-server-titiler.*OK"
-        python -m jupyterlab.browser_check --no-browser-test
+        jupyter server extension list 2>&1 | grep -ie "jupyter_xarray_tiler.*OK"
 
   integration-tests:
     name: Integration tests
@@ -116,7 +108,7 @@ jobs:
     - name: Install the extension
       run: |
         set -eux
-        python -m pip install "jupyterlab>=4.0.0,<5" jupyter_server_titiler*.whl
+        python -m pip install "jupyterlab>=4.0.0,<5" jupyter_xarray_tiler*.whl
 
     - name: Install dependencies
       working-directory: ui-tests
@@ -148,7 +140,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: jupyter_server_titiler-playwright-tests
+        name: jupyter_xarray_tiler-playwright-tests
         path: |
           ui-tests/test-results
           ui-tests/playwright-report
