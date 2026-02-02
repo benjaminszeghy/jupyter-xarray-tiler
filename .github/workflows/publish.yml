@@ -1,0 +1,31 @@
+name: "Publish to PyPI"
+
+on:
+  release:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v6"
+      - uses: "astral-sh/setup-uv@v7"
+      - run: "uv build"
+      - uses: "actions/upload-artifact@v6"
+        with:
+          name: "dist"
+          path: "dist"
+
+  pypi-publish:
+    name: "Upload dist to PyPI"
+    needs: "build"
+    runs-on: "ubuntu-latest"
+    environment:
+      name: "pypi"
+      url: "https://pypi.org/p/jupyter-xarray-tiler"
+    permissions:
+      id-token: write
+    steps:
+    - name: "Get dist artifact"
+      uses: "actions/download-artifact@v7"
+    - name: "Upload dist to PyPI"
+      uses: "pypa/gh-action-pypi-publish@release/v1"
