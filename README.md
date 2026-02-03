@@ -81,10 +81,6 @@ class MyMapLibrary:
 
 ## Install
 
-> [!WARNING]
-> This method of installation doesn't work yet.
-> Install from source or see the [contributing instuctions](CONTRIBUTING.md) for now.
-
 Recommended:
 
 ```bash
@@ -92,6 +88,10 @@ uv add jupyter-xarray-tiler
 ```
 
 Or:
+
+> [!WARNING]
+> Installation with pixi/conda/mamba/micromamba is not yet supported.
+> Please use another installation method!
 
 ```bash
 pixi add jupyter-xarray-tiler
