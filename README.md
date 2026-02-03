@@ -11,19 +11,6 @@ A Jupyter server extension which provides an API to launch a server to dynamical
 [Xarray DataArray](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html)s
 for interactive visualization.
 
-### :rocket: Powered by...
-
-[TiTiler (Development Seed)](https://developmentseed.org/titiler/)
-
-Other backends (e.g.
-[xpublish-tiles (earthmover)](https://github.com/earth-mover/xpublish-tiles)) may be
-supported in the future!
-
-### :sparkles: Inspired by...
-
-[jupytergis-tiler](https://github.com/geojupyter/jupytergis-tiler) by
-[David Brochart](https://github.com/davidbrochart)
-
 ## Who is this for?
 
 Intended to be consumed by interactive map libraries for Jupyter, **not end-users**,
@@ -113,3 +100,16 @@ For _development_ instructions, please view the
 
 Please see the
 [Contributor Guide in our documentation](https://jupyter-xarray-tiler.readthedocs.io/en/latest/contributor-guide/)!
+
+## :rocket: Powered by...
+
+[TiTiler (Development Seed)](https://developmentseed.org/titiler/)
+
+Other backends (e.g.
+[xpublish-tiles (earthmover)](https://github.com/earth-mover/xpublish-tiles)) may be
+supported in the future!
+
+## :sparkles: Inspired by...
+
+[jupytergis-tiler](https://github.com/geojupyter/jupytergis-tiler) by
+[David Brochart](https://github.com/davidbrochart)
