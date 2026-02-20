@@ -67,6 +67,8 @@ docs = [
 # Dependencies for playing with the extension with real data, e.g. test
 # notebooks in the `examples` directory:
 play = [
+    "requests",
+    "tqdm",
     "leafmap",
     "mapclassify",
     "odc-stac",
